@@ -1,5 +1,7 @@
 package Game;
 
+import Game.Piece.Pawn;
+import Game.Piece.Piece;
 import Main.GamePanel;
 
 import javax.imageio.ImageIO;
@@ -32,6 +34,13 @@ public class Board {
                 int y = startY + (col + row) * (gp.tileSize / 4);
                 g.drawImage(tileImage, x, y, gp.tileSize, gp.tileSize, null);
             }
+        }
+
+        for(int col = 0; col < COL; col++){
+            Pawn p = new Pawn(String.format("Pawn%d%d",1,col),1,col);
+            Pawn dp = new Pawn(String.format("Pawn%d%d",6,col),6,col);
+            p.draw(g,1,col);
+            dp.draw(g,6,col);
         }
     }
 }
