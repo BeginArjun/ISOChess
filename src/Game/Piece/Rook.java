@@ -2,16 +2,16 @@ package Game.Piece;
 
 import Util.Position;
 
-public class Pawn extends Piece{
+public class Rook extends Piece{
     String lightImgFront, darkImgFront;
 
-    public Pawn(String title, int x, int y) {
-        super(title, new Position(x, y));
-        this.lightImgFront = "/Pieces/pawn-light.png";
-        this.darkImgFront = "/Pieces/pawn-dark.png";
+    public Rook(String title, int x, int y) {
+        super(title, new Position(x,y));
         if(this.type == Type.DARK){
+            this.darkImgFront = "/Pieces/rook-dark.png";
             setImages(this.darkImgFront);
         }else{
+            this.lightImgFront = "/Pieces/rook-light.png";
             setImages(this.lightImgFront);
         }
     }

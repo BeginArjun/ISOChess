@@ -1,7 +1,6 @@
 package Game;
 
-import Game.Piece.Pawn;
-import Game.Piece.Piece;
+import Game.Piece.*;
 import Main.GamePanel;
 
 import javax.imageio.ImageIO;
@@ -36,11 +35,28 @@ public class Board {
             }
         }
 
+
+        Rook r1 = new Rook("Rook00",0,0);
+        r1.draw(g,0,0);
+
+        Knight k1 = new Knight("Knight01",0,1);
+        k1.draw(g,0,1);
+
+        Bishop bp1 = new Bishop("Bishop02", 0 , 2);
+        bp1.draw(g,0,2);
+
+
         for(int col = 0; col < COL; col++){
             Pawn p = new Pawn(String.format("Pawn%d%d",1,col),1,col);
             Pawn dp = new Pawn(String.format("Pawn%d%d",6,col),6,col);
             p.draw(g,1,col);
             dp.draw(g,6,col);
         }
+        Rook r2 = new Rook("Rook70",7,0);
+        r2.draw(g,7,0);
+        Knight k2 = new Knight("Knight71",7,1);
+        k2.draw(g,7,1);
+        Bishop bp2 = new Bishop("Bishop72",7,2);
+        bp2.draw(g,7,2);
     }
 }
