@@ -12,7 +12,7 @@ public class GameState {
     State currentState;
 
     public GameState(){
-        this.currentState = State.GAME;
+        this.currentState = State.TITLE;
     }
 
     public State getState(){

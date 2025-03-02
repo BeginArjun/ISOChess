@@ -1,5 +1,8 @@
 package Main;
 
+import UI.TitleScreen;
+import UI.UIManager;
+
 import javax.swing.*;
 
 public class Main {
@@ -11,11 +14,6 @@ public class Main {
         window.setUndecorated(true);
         window.setVisible(true);
 
-        GamePanel gamePanel = new GamePanel();
-
-        window.add(gamePanel);
-        window.pack();
-
-        gamePanel.startGame();
+        UIManager manager = new UIManager(window);
     }
 }

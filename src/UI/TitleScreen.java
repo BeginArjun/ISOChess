@@ -1,48 +1,67 @@
 package UI;
 
-import Main.GamePanel;
+import Constants.Constants;
+import Main.KeyHandler;
 import Util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
-public class TitleScreen {
-    Font titleFont, menuFont;
-    private static String[] MENUS = {"START GAME","OPTIONS", "EXIT"};
+public class TitleScreen extends JPanel implements Runnable {
+    private static final String[] MENUS = new String[]{"START GAME", "OPTIONS", "EXIT"};
+    ArrayList<MenuItems> menuItems;
+    KeyHandler keyH = new KeyHandler();
+    int FPS = Constants.FPS;
+    UIManager manager;
+    Thread thread;
+    MenuBuilder menuBuilder;
 
-    public TitleScreen(){
-        this.titleFont = new Font("Arial", Font.BOLD, 120);
-        this.menuFont = new Font("Arial", Font.PLAIN,64);
+    public TitleScreen(UIManager manager){
+        this.setPreferredSize(new Dimension(Constants.screenWidth, Constants.screenHeight));
+        this.setBackground(Color.BLACK);
+        this.setDoubleBuffered(true);
+        this.manager = manager;
+        this.setFocusable(true);
+        this.addKeyListener(keyH);
+        this.setName("Title");
     }
 
-
-    private void drawTitle(Graphics2D g2, GamePanel gp){
-        g2.setColor(Color.WHITE);
-        g2.setFont(titleFont);
-        String titleText = "ISOCHESS";
-        int x = Utils.getCenterXString(titleText, gp, g2);
-        System.out.println(String.format("X at %d", x));
-        int y = gp.screenHeight / 4;
-        g2.drawString(titleText, x, y);
+    public void start(){
+        this.thread = new Thread(this, "Title");
+        this.thread.start();
     }
 
-    private void drawMenu(Graphics2D g2, GamePanel gp){
-        g2.setFont(menuFont);
-        int idx = 0;
-        for(String s : MENUS){
-            int x = Utils.getCenterXString(s,gp,g2);
-            int y = gp.screenHeight / 2 + (gp.tileSize * (2 + idx));
-
-            g2.drawString(s,x,y);
-            g2.drawString(">", x - 42, y);
-            idx++;
+    public void stop(){
+        if(this.thread != null){
+            Thread temp = this.thread;
+            this.thread = null;
+            temp.interrupt();
         }
     }
 
-    public void drawTitleScreen(Graphics2D g2, GamePanel gp){
-        this.drawTitle(g2, gp);
-        this.drawMenu(g2,gp);
+
+    private void drawTitle(Graphics2D g2){
+        g2.setColor(Color.WHITE);
+        g2.setFont(Constants.titleFont);
+        String titleText = "ISOCHESS";
+        int x = Utils.getCenterXString(titleText, g2);
+        System.out.printf("X at %d%n", x);
+        int y = Constants.screenHeight / 4;
+        g2.drawString(titleText, x, y);
+    }
+
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        this.drawTitle(g2);
+        this.menuBuilder = new MenuBuilder(MENUS,keyH,g2);
+    }
+
+    @Override
+    public void run() {
+
     }
 }

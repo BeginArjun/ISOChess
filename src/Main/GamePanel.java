@@ -1,8 +1,10 @@
 package Main;
 
+import Constants.Constants;
 import Game.Board;
 import Game.GameState;
 import UI.TitleScreen;
+import UI.UIManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,48 +26,56 @@ public class GamePanel extends JPanel implements Runnable {
     int FPS = 60;
     Thread gameThread;
 
+    KeyHandler kh = new KeyHandler();
+    UIManager manager;
     Board board;
-    GameState gameState;
 
-    public GamePanel(){
+    public GamePanel(UIManager manager){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
-        this.gameState = new GameState();
+        this.requestFocusInWindow();
+        this.setName("Game");
+        this.addKeyListener(kh);
+        this.manager = manager;
         this.board = new Board();
     }
 
     public void startGame(){
-        gameThread = new Thread("Game Thread");
+        gameThread = new Thread(this,"Game Thread");
         gameThread.start();
+    }
+
+    public void stopGame(){
+        System.out.println("Stopping sir");
+        if(gameThread != null){
+            Thread temp = gameThread;
+            gameThread = null;
+            temp.interrupt();
+        }
+    }
+
+    private void checkPause(){
+        if(this.kh.escPressed){
+            System.out.println("Bingo");
+            manager.showTitleScreen();
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g){
-        System.out.println("Running paint");
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        GameState.State currentGameState = this.gameState.getState();
+        board.generateBoard(g2,this);
 
-        switch (currentGameState){
-            case TITLE :
-                TitleScreen titleScreen = new TitleScreen();
-                titleScreen.drawTitleScreen(g2, this);
-                break;
-            case GAME:
-                board.generateBoard(g2,this);
-                break;
-            default:
-                break;
-        }
 
         g2.dispose();
     }
 
     public void update(){
-
+        checkPause();
     }
 
     // Game Loop
@@ -77,6 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
 
         while (gameThread != null){
+            System.out.println("Running sir");
             currentTime = System.nanoTime();
 
             delta += (currentTime - lastTime) / drawInterval;
