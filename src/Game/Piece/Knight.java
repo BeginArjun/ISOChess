@@ -8,7 +8,7 @@ public class Knight extends Piece{
     public Knight(String title, int x, int y) {
         super(title, new Position(x,y));
         if(this.type == Type.DARK){
-            this.darkImgFront = "/Pieces/knight-dark-rev.png";
+            this.darkImgFront = "/Pieces/horse-dark-back.png";
             setImages(this.darkImgFront);
         }else{
             this.lightImgFront = "/Pieces/knight-light.png";
