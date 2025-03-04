@@ -29,7 +29,9 @@ public class MenuItem {
     public void draw(Graphics2D g){
         g.setFont(Constants.menuFont);
         g.setColor(Color.WHITE);
-        g.draw(bound);
+        if(this.active){
+            g.draw(bound);
+        }
         g.drawString(this.title, textPosition.x, textPosition.y);
     }
 
